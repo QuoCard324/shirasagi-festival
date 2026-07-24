@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>文化祭 株価レート掲示板</title>
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-main: #212529;
+      --text-muted: #6c757d;
+      --border-color: #e9ecef;
+      --up-color: #198754;   /* 落ち着いた緑 */
+      --down-color: #dc3545; /* 落ち着いた赤 */
+      --btn-primary: #343a40;
+      --btn-hover: #212529;
+      --btn-secondary: #f1f3f5;
+      --btn-sec-text: #495057;
+      --btn-sec-hover: #e9ecef;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    header {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .news-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .news-tag {
+      background: #e9ecef;
+      color: #495057;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stock-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stock-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    .stock-code {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .stock-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .stock-price {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .stock-change {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .up { color: var(--up-color); }
+    .down { color: var(--down-color); }
+    .neutral { color: var(--text-muted); }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    button {
+      border: 1px solid transparent;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-main {
+      background: var(--btn-primary);
+      color: #ffffff;
+    }
+
+    .btn-main:hover {
+      background: var(--btn-hover);
+    }
+
+    .btn-sub {
+      background: var(--btn-secondary);
+      color: var(--btn-sec-text);
+      border-color: var(--border-color);
+    }
+
+    .btn-sub:hover {
+      background: var(--btn-sec-hover);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>文化祭 株式マーケット</h1>
+      <div class="subtitle">リアルタイム変動レート</div>
+    </header>
+
+    <div class="news-card">
+      <span class="news-tag">NEWS</span>
+      <span id="newsBox">市場は安定して稼働しています</span>
+    </div>
+
+    <div class="board" id="stockBoard"></div>
+
+    <div class="controls">
+      <button class="btn-main" onclick="updatePrices()">1ターン進める（株価更新）</button>
+      <button class="btn-sub" onclick="triggerEvent('boom')">高騰イベント発生</button>
+      <button class="btn-sub" onclick="triggerEvent('crash')">暴落イベント発生</button>
+    </div>
+  </div>
+
+  <script>
+    // 銘柄定義（絵文字を排除し、コード表記を追加してシンプル化）
+    const stocks = [
+      { code: 'TAKO', name: 'タコヤキCorp.', price: 500, prevPrice: 500, volatility: 0.15 },
+      { code: 'OBKE', name: 'お化け屋敷ホールディングス', price: 1200, prevPrice: 1200, volatility: 0.25 },
+      { code: 'BNNA', name: 'チョコバナナ工業', price: 300, prevPrice: 300, volatility: 0.10 },
+    ];
+
+    // ニュース一覧（絵文字を含まないテキスト）
+    const newsList = [
+      "タコヤキのソースが絶品だと話題に",
+      "お化け屋敷の待ち時間が延長中",
+      "チョコバナナのトッピングが無料化",
+      "天候悪化の噂で客足に懸念",
+      "校長先生がブースを訪問"
+    ];
+
+    // 描画機能
+    function render() {
+      const board = document.getElementById('stockBoard');
+      board.innerHTML = '';
+
+      stocks.forEach(stock => {
+        const diff = stock.price - stock.prevPrice;
+        let changeClass = 'neutral';
+        let changeSign = '+';
+
+        if (diff > 0) {
+          changeClass = 'up';
+          changeSign = '+';
+        } else if (diff < 0) {
+          changeClass = 'down';
+          changeSign = '';
+        }
+
+        const card = document.createElement('div');
+        card.className = 'stock-card';
+        card.innerHTML = `
+          <div class="stock-code">${stock.code}</div>
+          <div class="stock-name">${stock.name}</div>
+          <div class="stock-price">${stock.price.toLocaleString()} 円</div>
+          <div class="stock-change ${changeClass}">${changeSign}${diff.toLocaleString()} 円</div>
+        `;
+        board.appendChild(card);
+      });
+    }
+
+    // 変動処理
+    function updatePrices() {
+      stocks.forEach(stock => {
+        stock.prevPrice = stock.price;
+        const rate = (Math.random() * 2 - 1) * stock.volatility;
+        let newPrice = Math.round(stock.price * (1 + rate));
+        stock.price = Math.max(10, newPrice);
+      });
+
+      const randomNews = newsList[Math.floor(Math.random() * newsList.length)];
+      document.getElementById('newsBox').innerText = randomNews;
+
+      render();
+    }
+
+    // イベント発生
+    function triggerEvent(type) {
+      stocks.forEach(stock => {
+        stock.prevPrice = stock.price;
+        if (type === 'boom') {
+          stock.price = Math.round(stock.price * (1.3 + Math.random() * 0.2));
+        } else if (type === 'crash') {
+          stock.price = Math.round(stock.price * (0.5 + Math.random() * 0.2));
+        }
+      });
+
+      if (type === 'boom') {
+        document.getElementById('newsBox').innerText = "文化祭が大盛況。全体的に株価が上昇傾向です。";
+      } else if (type === 'crash') {
+        document.getElementById('newsBox').innerText = "急な悪天候。全体的に株価が下落傾向です。";
+      }
+
+      render();
+    }
+
+    // 初回描画
+    render();
+  </script>
+</body>
+</html>
