@@ -36,11 +36,11 @@
 
     .container {
       width: 100%;
-      max-width: 600px;
+      max-width: 650px;
     }
 
     header {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       text-align: center;
     }
 
@@ -98,7 +98,20 @@
 
     /* レート監視画面のスタイル */
     #monitorScreen {
-      display: none; /* 初期状態は非表示 */
+      display: none;
+    }
+
+    /* カウントダウンバー */
+    .timer-card {
+      background: #e9ecef;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #495057;
+      text-align: center;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
     }
 
     .news-card {
@@ -111,7 +124,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     }
 
@@ -129,10 +142,10 @@
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       border-radius: 12px;
-      padding: 32px 24px;
+      padding: 28px 24px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .stock-code {
@@ -140,27 +153,58 @@
       font-weight: 700;
       color: var(--text-muted);
       letter-spacing: 0.5px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .stock-name {
       font-size: 1.3rem;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 16px;
-    }
-
-    .stock-price {
-      font-size: 3rem;
-      font-weight: 700;
-      letter-spacing: -1px;
-      line-height: 1.1;
       margin-bottom: 12px;
     }
 
+    .stock-price {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
     .stock-change {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    /* 折れ線グラフ表示エリア */
+    .chart-container {
+      width: 100%;
+      height: 150px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .polyline-up {
+      fill: none;
+      stroke: var(--up-color);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .polyline-down {
+      fill: none;
+      stroke: var(--down-color);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .up { color: var(--up-color); }
@@ -198,14 +242,31 @@
       </div>
     </div>
 
-    <!-- 2. 株価モニター画面（自動更新） -->
+    <!-- 2. 株価モニター画面 -->
     <div id="monitorScreen">
+      <!-- カウントダウン表示 -->
+      <div class="timer-card">
+        次回更新まで あと <span id="countdown">5</span> 秒
+      </div>
+
       <div class="news-card">
         <span class="news-tag">NEWS</span>
         <span id="newsBox">市場オープン。監視を開始します。</span>
       </div>
 
-      <div class="stock-card" id="stockCard"></div>
+      <div class="stock-card">
+        <div class="stock-code" id="stockCode"></div>
+        <div class="stock-name" id="stockName"></div>
+        <div class="stock-price" id="stockPrice"></div>
+        <div class="stock-change" id="stockChange"></div>
+
+        <!-- 折れ線グラフエリア -->
+        <div class="chart-container">
+          <svg id="chartSvg" viewBox="0 0 500 120" preserveAspectRatio="none">
+            <polyline id="chartPolyline" points="" class="polyline-up" />
+          </svg>
+        </div>
+      </div>
 
       <div class="back-btn-container">
         <button class="btn-back" onclick="resetSelection()">← 会社選択に戻る</button>
@@ -214,13 +275,13 @@
   </div>
 
   <script>
-    // 2社のみ定義
     const stocksData = {
       'ODAC': {
         code: 'ODAC',
         name: '大安寺Corp.',
         price: 1000,
         prevPrice: 1000,
+        history: [1000], // 株価履歴（グラフ用）
         news: [
           { text: "新商品の発表で期待感が高まる！", type: "boom" },
           { text: "行列ができて話題沸騰中！", type: "boom" },
@@ -235,6 +296,7 @@
         name: '山陽ホールディングス',
         price: 1000,
         prevPrice: 1000,
+        history: [1000], // 株価履歴（グラフ用）
         news: [
           { text: "上方修正を発表し好調な滑り出し！", type: "boom" },
           { text: "他校からの視察団が訪れ好評！", type: "boom" },
@@ -248,22 +310,24 @@
 
     let selectedStock = null;
     let timerId = null;
+    let timeLeft = 5;
 
-    // 会社選択時の処理
     function selectCompany(code) {
-      selectedStock = JSON.parse(JSON.stringify(stocksData[code])); // データのディープコピー
+      selectedStock = JSON.parse(JSON.stringify(stocksData[code]));
       
       document.getElementById('selectScreen').style.display = 'none';
       document.getElementById('monitorScreen').style.display = 'block';
-      document.getElementById('headerSubtitle').innerText = 'リアルタイム自動変動中（5秒更新）';
+      document.getElementById('headerSubtitle').innerText = 'リアルタイム自動変動中';
+
+      timeLeft = 5;
+      document.getElementById('countdown').innerText = timeLeft;
 
       render();
 
-      // 5秒ごとに自動変動するタイマーを開始
-      timerId = setInterval(autoUpdate, 5000);
+      // 1秒ごとにタイマーカウントダウン
+      timerId = setInterval(tick, 1000);
     }
 
-    // 選択画面に戻る処理
     function resetSelection() {
       if (timerId) clearInterval(timerId);
       selectedStock = null;
@@ -273,7 +337,45 @@
       document.getElementById('headerSubtitle').innerText = '銘柄を選択してください';
     }
 
-    // 画面更新描画
+    // 1秒刻みのタイマー処理
+    function tick() {
+      timeLeft--;
+      document.getElementById('countdown').innerText = timeLeft;
+
+      if (timeLeft <= 0) {
+        autoUpdate();
+        timeLeft = 5; // 5秒リセット
+        document.getElementById('countdown').innerText = timeLeft;
+      }
+    }
+
+    // 株価自動更新
+    function autoUpdate() {
+      if (!selectedStock) return;
+
+      selectedStock.prevPrice = selectedStock.price;
+
+      const isBoom = Math.random() < 0.5;
+      let rate = isBoom ? (0.20 + Math.random() * 0.20) : -(0.20 + Math.random() * 0.20);
+
+      let newPrice = Math.round(selectedStock.price * (1 + rate));
+      selectedStock.price = Math.max(10, newPrice);
+
+      // 履歴を追加（直近10件まで保持）
+      selectedStock.history.push(selectedStock.price);
+      if (selectedStock.history.length > 10) {
+        selectedStock.history.shift();
+      }
+
+      // ニュース切り替え
+      const targetNewsList = selectedStock.news.filter(n => n.type === (isBoom ? 'boom' : 'crash'));
+      const randomNews = targetNewsList[Math.floor(Math.random() * targetNewsList.length)];
+      document.getElementById('newsBox').innerText = randomNews.text;
+
+      render();
+    }
+
+    // 画面描画（テキスト＆グラフ）
     function render() {
       if (!selectedStock) return;
 
@@ -289,43 +391,47 @@
         changeSign = '';
       }
 
-      const card = document.getElementById('stockCard');
-      card.innerHTML = `
-        <div class="stock-code">${selectedStock.code}</div>
-        <div class="stock-name">${selectedStock.name}</div>
-        <div class="stock-price">${selectedStock.price.toLocaleString()} 円</div>
-        <div class="stock-change ${changeClass}">${changeSign}${diff.toLocaleString()} 円</div>
-      `;
+      document.getElementById('stockCode').innerText = selectedStock.code;
+      document.getElementById('stockName').innerText = selectedStock.name;
+      document.getElementById('stockPrice').innerText = `${selectedStock.price.toLocaleString()} 円`;
+      
+      const changeEl = document.getElementById('stockChange');
+      changeEl.className = `stock-change ${changeClass}`;
+      changeEl.innerText = `${changeSign}${diff.toLocaleString()} 円`;
+
+      // グラフの描画計算
+      drawChart(changeClass);
     }
 
-    // 5秒ごとに完全全自動で実行される乱数変動処理
-    function autoUpdate() {
-      if (!selectedStock) return;
+    // SVGを使ったリアルタイム折れ線グラフ作成
+    function drawChart(statusClass) {
+      const history = selectedStock.history;
+      const svgWidth = 500;
+      const svgHeight = 120;
+      const padding = 10;
 
-      selectedStock.prevPrice = selectedStock.price;
-
-      // ランダムで高騰(50%の確率)か大幅下落(50%の確率)かを判定
-      const isBoom = Math.random() < 0.5;
-
-      let rate = 0;
-      if (isBoom) {
-        // 20% 〜 40% 高騰
-        rate = 0.20 + Math.random() * 0.20;
-      } else {
-        // 20% 〜 40% 大幅下落
-        rate = -(0.20 + Math.random() * 0.20);
+      if (history.length < 2) {
+        // データが1つしかない時は真ん中に横線を引く
+        document.getElementById('chartPolyline').setAttribute('points', `0,${svgHeight/2} ${svgWidth},${svgHeight/2}`);
+        return;
       }
 
-      let newPrice = Math.round(selectedStock.price * (1 + rate));
-      selectedStock.price = Math.max(10, newPrice); // 最低価格10円
+      const minPrice = Math.min(...history);
+      const maxPrice = Math.max(...history);
+      const priceRange = (maxPrice - minPrice) || 1; // 0除算防止
 
-      // 高騰/下落に合わせてニュースもランダム抽出して切替
-      const targetNewsList = selectedStock.news.filter(n => n.type === (isBoom ? 'boom' : 'crash'));
-      const randomNews = targetNewsList[Math.floor(Math.random() * targetNewsList.length)];
-      
-      document.getElementById('newsBox').innerText = randomNews.text;
+      // 座標のポイントリストを計算
+      const points = history.map((price, index) => {
+        const x = (index / (history.length - 1)) * svgWidth;
+        // SVGはY軸が上下反転するため計算を調整
+        const normalizedY = (price - minPrice) / priceRange;
+        const y = svgHeight - padding - (normalizedY * (svgHeight - padding * 2));
+        return `${x},${y}`;
+      }).join(' ');
 
-      render();
+      const polyline = document.getElementById('chartPolyline');
+      polyline.setAttribute('points', points);
+      polyline.className = statusClass === 'down' ? 'polyline-down' : 'polyline-up';
     }
   </script>
 </body>
