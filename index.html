@@ -56,7 +56,7 @@
       font-size: 0.9rem;
     }
 
-    /* 選択画面のスタイル */
+    /* 選択画面 */
     #selectScreen {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -96,7 +96,7 @@
       border-color: var(--btn-primary);
     }
 
-    /* レート監視画面のスタイル */
+    /* レート監視画面 */
     #monitorScreen {
       display: none;
     }
@@ -136,6 +136,7 @@
       padding: 3px 8px;
       border-radius: 4px;
       text-transform: uppercase;
+      flex-shrink: 0;
     }
 
     .stock-card {
@@ -182,7 +183,7 @@
       width: 100%;
       height: 180px;
       border-top: 1px solid var(--border-color);
-      padding-top: 16px;
+      padding-top: 12px;
     }
 
     svg {
@@ -191,10 +192,16 @@
       overflow: visible;
     }
 
+    .grid-line {
+      stroke: #e9ecef;
+      stroke-width: 1;
+      stroke-dasharray: 4, 4;
+    }
+
     .polyline-up {
       fill: none;
       stroke: var(--up-color);
-      stroke-width: 3;
+      stroke-width: 2.5;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
@@ -202,7 +209,7 @@
     .polyline-down {
       fill: none;
       stroke: var(--down-color);
-      stroke-width: 3;
+      stroke-width: 2.5;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
@@ -210,11 +217,11 @@
     .dot-up { fill: var(--up-color); }
     .dot-down { fill: var(--down-color); }
 
-    .chart-text {
-      font-size: 11px;
-      font-weight: 700;
-      fill: var(--text-main);
-      text-anchor: middle;
+    .axis-text {
+      font-size: 10px;
+      font-weight: 600;
+      fill: var(--text-muted);
+      text-anchor: end;
     }
 
     .up { color: var(--up-color); }
@@ -254,9 +261,8 @@
 
     <!-- 2. 株価モニター画面 -->
     <div id="monitorScreen">
-      <!-- カウントダウン表示 -->
       <div class="timer-card">
-        次回更新まで あと <span id="countdown">7</span> 秒
+        次回更新まで あと <span id="countdown">5</span> 秒
       </div>
 
       <div class="news-card">
@@ -273,6 +279,17 @@
         <!-- 折れ線グラフエリア -->
         <div class="chart-container">
           <svg id="chartSvg" viewBox="0 0 500 160" preserveAspectRatio="none">
+            <!-- 背景グリッド -->
+            <line id="gridTop" x1="60" y1="20" x2="500" y2="20" class="grid-line" />
+            <line id="gridMid" x1="60" y1="80" x2="500" y2="80" class="grid-line" />
+            <line id="gridBot" x1="60" y1="140" x2="500" y2="140" class="grid-line" />
+
+            <!-- 縦軸目盛り（金額） -->
+            <text id="axisMax" x="52" y="24" class="axis-text">0円</text>
+            <text id="axisMid" x="52" y="84" class="axis-text">0円</text>
+            <text id="axisMin" x="52" y="144" class="axis-text">0円</text>
+
+            <!-- 折れ線グラフ＆データ点 -->
             <polyline id="chartPolyline" points="" class="polyline-up" />
             <g id="chartPoints"></g>
           </svg>
@@ -286,7 +303,7 @@
   </div>
 
   <script>
-    const INTERVAL_SECONDS = 7; // 更新時間：7秒
+    const INTERVAL_SECONDS = 5; // 更新時間：5秒
 
     const stocksData = {
       'ODAC': {
@@ -294,14 +311,27 @@
         name: '大安寺Corp.',
         price: 1000,
         prevPrice: 1000,
-        history: [1000], // 株価履歴
+        history: [1000],
         news: [
-          { text: "新商品の発表で期待感が高まる！", type: "boom" },
-          { text: "行列ができて話題沸騰中！", type: "boom" },
-          { text: "製造ラインの一時トラブル発生...", type: "crash" },
-          { text: "材料の在庫が不足気味との噂", type: "crash" },
-          { text: "校長先生が訪問し大絶賛！", type: "boom" },
-          { text: "急な悪天候で客足が減少", type: "crash" }
+          // 高騰ニュース
+          { text: "新商品の発表で注文が殺到中！", type: "boom" },
+          { text: "ブース前に行列ができ話題沸騰！", type: "boom" },
+          { text: "校長先生が訪問し大絶賛のコメント", type: "boom" },
+          { text: "SNSで話題になり他校からの来場者が急増", type: "boom" },
+          { text: "限定ノベルティの配布開始で大盛況", type: "boom" },
+          { text: "予想以上の売上で上方修正を発表", type: "boom" },
+          { text: "有名インフルエンサーの紹介で注目度が急上昇", type: "boom" },
+          { text: "大型コラボ企画の発表で期待が高まる", type: "boom" },
+
+          // 下落ニュース
+          { text: "製造ラインで一時的なトラブルが発生...", type: "crash" },
+          { text: "材料の在庫が不足気味との噂が広まる", type: "crash" },
+          { text: "急な悪天候により客足が一時減少", type: "crash" },
+          { text: "会計で混雑が発生し待ち時間が長期化", type: "crash" },
+          { text: "ライバル店のタイムセールにより客足が流出", type: "crash" },
+          { text: "機材の調整のため一時販売を中断", type: "crash" },
+          { text: "SNSでの誤情報により一時的な警戒感", type: "crash" },
+          { text: "スタッフの連携ミスで商品提供が遅延", type: "crash" }
         ]
       },
       'SYHD': {
@@ -309,14 +339,27 @@
         name: '山陽ホールディングス',
         price: 1000,
         prevPrice: 1000,
-        history: [1000], // 株価履歴
+        history: [1000],
         news: [
-          { text: "上方修正を発表し好調な滑り出し！", type: "boom" },
-          { text: "他校からの視察団が訪れ好評！", type: "boom" },
-          { text: "ライバル店の値下げで苦戦を強いられる", type: "crash" },
-          { text: "設備調整のため一時的に混雑発生", type: "crash" },
-          { text: "タイムセール開始で注文殺到！", type: "boom" },
-          { text: "雨脚が強まり客足への影響が懸念", type: "crash" }
+          // 高騰ニュース
+          { text: "業績好調につき特別セールの開催を発表！", type: "boom" },
+          { text: "他校からの視察団が訪れ高評価を獲得！", type: "boom" },
+          { text: "タイムセール開始直後に注文が殺到！", type: "boom" },
+          { text: "新技術の導入で処理能力が2倍に向上", type: "boom" },
+          { text: "顧客満足度調査で堂々の第1位を獲得", type: "boom" },
+          { text: "看板商品の増産体制が完了したと発表", type: "boom" },
+          { text: "地域メディアの取材を受け認知度が拡大", type: "boom" },
+          { text: "大規模なプロモーションが功を奏す", type: "boom" },
+
+          // 下落ニュース
+          { text: "ライバル店の値下げ攻撃で苦戦を強いられる", type: "crash" },
+          { text: "設備調整のため一時的な混雑が発生", type: "crash" },
+          { text: "雨脚が強まり全体的な客足への影響が懸念", type: "crash" },
+          { text: "一部商品の品切れが発生し機会損失に", type: "crash" },
+          { text: "お釣りの不足により会計ラインが一時停滞", type: "crash" },
+          { text: "ピーク時の配送遅延が好感度を下げる", type: "crash" },
+          { text: "近隣ブースのイベントに人が流れる", type: "crash" },
+          { text: "原材料の高騰により利益率への懸念が浮上", type: "crash" }
         ]
       }
     };
@@ -366,10 +409,7 @@
 
       selectedStock.prevPrice = selectedStock.price;
 
-      // 上昇か下落かをランダム判定
       const isBoom = Math.random() < 0.5;
-
-      // 5円 〜 100円の範囲でランダム変動
       const changeAmount = Math.floor(Math.random() * (100 - 5 + 1)) + 5;
       
       if (isBoom) {
@@ -378,16 +418,15 @@
         selectedStock.price -= changeAmount;
       }
 
-      // 最低価格10円
       selectedStock.price = Math.max(10, selectedStock.price);
 
-      // 履歴を追加（直近7データまで保持）
+      // 直近8件の履歴を保持
       selectedStock.history.push(selectedStock.price);
-      if (selectedStock.history.length > 7) {
+      if (selectedStock.history.length > 8) {
         selectedStock.history.shift();
       }
 
-      // ニュース切替
+      // ニュース切り替え
       const targetNewsList = selectedStock.news.filter(n => n.type === (isBoom ? 'boom' : 'crash'));
       const randomNews = targetNewsList[Math.floor(Math.random() * targetNewsList.length)];
       document.getElementById('newsBox').innerText = randomNews.text;
@@ -421,57 +460,66 @@
       drawChart(changeClass);
     }
 
-    // 折れ線グラフ＋点＋数値（金額）の描写
+    // 折れ線グラフ＋縦軸金額目盛りの自動調整描写
     function drawChart(statusClass) {
       const history = selectedStock.history;
       const svgWidth = 500;
       const svgHeight = 160;
-      const paddingY = 35; // 数字を表示するための上下余白
-      const paddingX = 30;
+      const paddingY = 20; 
+      const paddingLeft = 65; // 縦軸テキスト用のスペース
 
       const pointsContainer = document.getElementById('chartPoints');
       pointsContainer.innerHTML = '';
 
+      let minPrice = Math.min(...history);
+      let maxPrice = Math.max(...history);
+
+      // 上下に少し余裕（バッファ）を持たせる
+      if (minPrice === maxPrice) {
+        minPrice -= 50;
+        maxPrice += 50;
+      } else {
+        const margin = Math.round((maxPrice - minPrice) * 0.15) || 10;
+        minPrice = Math.max(0, minPrice - margin);
+        maxPrice = maxPrice + margin;
+      }
+
+      const midPrice = Math.round((maxPrice + minPrice) / 2);
+
+      // 縦軸（左端）の金額目もりを自動更新
+      document.getElementById('axisMax').textContent = `${maxPrice.toLocaleString()}円`;
+      document.getElementById('axisMid').textContent = `${midPrice.toLocaleString()}円`;
+      document.getElementById('axisMin').textContent = `${minPrice.toLocaleString()}円`;
+
       if (history.length < 2) {
-        document.getElementById('chartPolyline').setAttribute('points', `0,${svgHeight/2} ${svgWidth},${svgHeight/2}`);
+        document.getElementById('chartPolyline').setAttribute('points', `${paddingLeft},80 500,80`);
         return;
       }
 
-      const minPrice = Math.min(...history);
-      const maxPrice = Math.max(...history);
       const priceRange = (maxPrice - minPrice) || 1;
 
-      // 各点の座標・点・数字を作成
+      // 各ポイント座標計算
       const coords = history.map((price, index) => {
-        const x = paddingX + (index / (history.length - 1)) * (svgWidth - paddingX * 2);
+        const x = paddingLeft + (index / (history.length - 1)) * (svgWidth - paddingLeft);
         const normalizedY = (price - minPrice) / priceRange;
         const y = svgHeight - paddingY - (normalizedY * (svgHeight - paddingY * 2));
         return { x, y, price };
       });
 
-      // polylineのpoints設定
+      // polyline更新
       const pointsString = coords.map(c => `${c.x},${c.y}`).join(' ');
       const polyline = document.getElementById('chartPolyline');
       polyline.setAttribute('points', pointsString);
       polyline.className = statusClass === 'down' ? 'polyline-down' : 'polyline-up';
 
-      // 各データポイント（円と数字テキスト）を描画
+      // 丸ポチのみ追加（文字は縦軸にあるためスッキリ化）
       coords.forEach(c => {
-        // 円（点）
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         circle.setAttribute('cx', c.x);
         circle.setAttribute('cy', c.y);
-        circle.setAttribute('r', 4);
+        circle.setAttribute('r', 3.5);
         circle.setAttribute('class', statusClass === 'down' ? 'dot-down' : 'dot-up');
         pointsContainer.appendChild(circle);
-
-        // 数字テキスト（金額）
-        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('x', c.x);
-        text.setAttribute('y', c.y - 8); // 点の少し上に表示
-        text.setAttribute('class', 'chart-text');
-        text.textContent = `${c.price}円`;
-        pointsContainer.appendChild(text);
       });
     }
   </script>
