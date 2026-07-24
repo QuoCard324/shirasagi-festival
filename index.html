@@ -14,9 +14,6 @@
       --down-color: #dc3545; /* 落ち着いた赤 */
       --btn-primary: #343a40;
       --btn-hover: #212529;
-      --btn-secondary: #f1f3f5;
-      --btn-sec-text: #495057;
-      --btn-sec-hover: #e9ecef;
     }
 
     * {
@@ -32,13 +29,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       padding: 40px 20px;
       min-height: 100vh;
     }
 
     .container {
       width: 100%;
-      max-width: 900px;
+      max-width: 600px;
     }
 
     header {
@@ -56,6 +54,51 @@
     .subtitle {
       color: var(--text-muted);
       font-size: 0.9rem;
+    }
+
+    /* 選択画面のスタイル */
+    #selectScreen {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 30px 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      text-align: center;
+    }
+
+    #selectScreen h2 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: var(--text-main);
+    }
+
+    .company-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-select {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text-main);
+    }
+
+    .btn-select:hover {
+      background: var(--btn-primary);
+      color: #ffffff;
+      border-color: var(--btn-primary);
+    }
+
+    /* レート監視画面のスタイル */
+    #monitorScreen {
+      display: none; /* 初期状態は非表示 */
     }
 
     .news-card {
@@ -82,52 +125,41 @@
       text-transform: uppercase;
     }
 
-    .board {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-      margin-bottom: 32px;
-    }
-
     .stock-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       border-radius: 12px;
-      padding: 24px;
+      padding: 32px 24px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .stock-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      text-align: center;
+      margin-bottom: 24px;
     }
 
     .stock-code {
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--text-muted);
       letter-spacing: 0.5px;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .stock-name {
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 1.3rem;
+      font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .stock-price {
-      font-size: 2.2rem;
+      font-size: 3rem;
       font-weight: 700;
       letter-spacing: -1px;
       line-height: 1.1;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .stock-change {
-      font-size: 0.9rem;
+      font-size: 1.1rem;
       font-weight: 600;
     }
 
@@ -135,40 +167,17 @@
     .down { color: var(--down-color); }
     .neutral { color: var(--text-muted); }
 
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
+    .back-btn-container {
+      text-align: center;
     }
 
-    button {
-      border: 1px solid transparent;
-      padding: 10px 20px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      border-radius: 8px;
+    .btn-back {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.85rem;
       cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .btn-main {
-      background: var(--btn-primary);
-      color: #ffffff;
-    }
-
-    .btn-main:hover {
-      background: var(--btn-hover);
-    }
-
-    .btn-sub {
-      background: var(--btn-secondary);
-      color: var(--btn-sec-text);
-      border-color: var(--border-color);
-    }
-
-    .btn-sub:hover {
-      background: var(--btn-sec-hover);
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -177,109 +186,147 @@
   <div class="container">
     <header>
       <h1>文化祭 株式マーケット</h1>
-      <div class="subtitle">リアルタイム変動レート</div>
+      <div class="subtitle" id="headerSubtitle">銘柄を選択してください</div>
     </header>
 
-    <div class="news-card">
-      <span class="news-tag">NEWS</span>
-      <span id="newsBox">市場は安定して稼働しています</span>
+    <!-- 1. 会社選択画面 -->
+    <div id="selectScreen">
+      <h2>表示する会社を選択</h2>
+      <div class="company-buttons">
+        <button class="btn-select" onclick="selectCompany('ODAC')">大安寺Corp. (ODAC)</button>
+        <button class="btn-select" onclick="selectCompany('SYHD')">山陽ホールディングス (SYHD)</button>
+      </div>
     </div>
 
-    <div class="board" id="stockBoard"></div>
+    <!-- 2. 株価モニター画面（自動更新） -->
+    <div id="monitorScreen">
+      <div class="news-card">
+        <span class="news-tag">NEWS</span>
+        <span id="newsBox">市場オープン。監視を開始します。</span>
+      </div>
 
-    <div class="controls">
-      <button class="btn-main" onclick="updatePrices()">1ターン進める（株価更新）</button>
-      <button class="btn-sub" onclick="triggerEvent('boom')">高騰イベント発生</button>
-      <button class="btn-sub" onclick="triggerEvent('crash')">暴落イベント発生</button>
+      <div class="stock-card" id="stockCard"></div>
+
+      <div class="back-btn-container">
+        <button class="btn-back" onclick="resetSelection()">← 会社選択に戻る</button>
+      </div>
     </div>
   </div>
 
   <script>
-    // 銘柄定義（変更していただいた会社名）
-    const stocks = [
-      { code: 'ODAC', name: '大安寺Corp.', price: 500, prevPrice: 500, volatility: 0.15 },
-      { code: 'SYHD', name: '山陽ホールディングス', price: 1200, prevPrice: 1200, volatility: 0.25 },
-      { code: 'OKYM', name: '岡山工業', price: 300, prevPrice: 300, volatility: 0.10 },
-    ];
+    // 2社のみ定義
+    const stocksData = {
+      'ODAC': {
+        code: 'ODAC',
+        name: '大安寺Corp.',
+        price: 1000,
+        prevPrice: 1000,
+        news: [
+          { text: "新商品の発表で期待感が高まる！", type: "boom" },
+          { text: "行列ができて話題沸騰中！", type: "boom" },
+          { text: "製造ラインの一時トラブル発生...", type: "crash" },
+          { text: "材料の在庫が不足気味との噂", type: "crash" },
+          { text: "校長先生が訪問し大絶賛！", type: "boom" },
+          { text: "急な悪天候で客足が減少", type: "crash" }
+        ]
+      },
+      'SYHD': {
+        code: 'SYHD',
+        name: '山陽ホールディングス',
+        price: 1000,
+        prevPrice: 1000,
+        news: [
+          { text: "上方修正を発表し好調な滑り出し！", type: "boom" },
+          { text: "他校からの視察団が訪れ好評！", type: "boom" },
+          { text: "ライバル店の値下げで苦戦を強いられる", type: "crash" },
+          { text: "設備調整のため一時的に混雑発生", type: "crash" },
+          { text: "タイムセール開始で注文殺到！", type: "boom" },
+          { text: "雨脚が強まり客足への影響が懸念", type: "crash" }
+        ]
+      }
+    };
 
-    // ニュース一覧（会社名に合わせたニュース）
-    const newsList = [
-      "大安寺Corp.が新商品の発表を予告、期待感高まる",
-      "山陽ホールディングス、上方修正を発表し株価好調",
-      "岡山工業の新技術に注目集まる",
-      "大安寺Corp.の行列が話題に",
-      "山陽ホールディングス、他校からの視察を受け入れ",
-      "岡山工業、製造ラインの効率化に成功",
-      "天候悪化の噂で市場全体に客足への懸念",
-      "校長先生がブースを訪問"
-    ];
-    // 描画機能
-    function render() {
-      const board = document.getElementById('stockBoard');
-      board.innerHTML = '';
+    let selectedStock = null;
+    let timerId = null;
 
-      stocks.forEach(stock => {
-        const diff = stock.price - stock.prevPrice;
-        let changeClass = 'neutral';
-        let changeSign = '+';
-
-        if (diff > 0) {
-          changeClass = 'up';
-          changeSign = '+';
-        } else if (diff < 0) {
-          changeClass = 'down';
-          changeSign = '';
-        }
-
-        const card = document.createElement('div');
-        card.className = 'stock-card';
-        card.innerHTML = `
-          <div class="stock-code">${stock.code}</div>
-          <div class="stock-name">${stock.name}</div>
-          <div class="stock-price">${stock.price.toLocaleString()} 円</div>
-          <div class="stock-change ${changeClass}">${changeSign}${diff.toLocaleString()} 円</div>
-        `;
-        board.appendChild(card);
-      });
-    }
-
-    // 変動処理
-    function updatePrices() {
-      stocks.forEach(stock => {
-        stock.prevPrice = stock.price;
-        const rate = (Math.random() * 2 - 1) * stock.volatility;
-        let newPrice = Math.round(stock.price * (1 + rate));
-        stock.price = Math.max(10, newPrice);
-      });
-
-      const randomNews = newsList[Math.floor(Math.random() * newsList.length)];
-      document.getElementById('newsBox').innerText = randomNews;
+    // 会社選択時の処理
+    function selectCompany(code) {
+      selectedStock = JSON.parse(JSON.stringify(stocksData[code])); // データのディープコピー
+      
+      document.getElementById('selectScreen').style.display = 'none';
+      document.getElementById('monitorScreen').style.display = 'block';
+      document.getElementById('headerSubtitle').innerText = 'リアルタイム自動変動中（5秒更新）';
 
       render();
+
+      // 5秒ごとに自動変動するタイマーを開始
+      timerId = setInterval(autoUpdate, 5000);
     }
 
-    // イベント発生
-    function triggerEvent(type) {
-      stocks.forEach(stock => {
-        stock.prevPrice = stock.price;
-        if (type === 'boom') {
-          stock.price = Math.round(stock.price * (1.3 + Math.random() * 0.2));
-        } else if (type === 'crash') {
-          stock.price = Math.round(stock.price * (0.5 + Math.random() * 0.2));
-        }
-      });
+    // 選択画面に戻る処理
+    function resetSelection() {
+      if (timerId) clearInterval(timerId);
+      selectedStock = null;
+      
+      document.getElementById('monitorScreen').style.display = 'none';
+      document.getElementById('selectScreen').style.display = 'block';
+      document.getElementById('headerSubtitle').innerText = '銘柄を選択してください';
+    }
 
-      if (type === 'boom') {
-        document.getElementById('newsBox').innerText = "文化祭が大盛況。全体的に株価が上昇傾向です。";
-      } else if (type === 'crash') {
-        document.getElementById('newsBox').innerText = "急な悪天候。全体的に株価が下落傾向です。";
+    // 画面更新描画
+    function render() {
+      if (!selectedStock) return;
+
+      const diff = selectedStock.price - selectedStock.prevPrice;
+      let changeClass = 'neutral';
+      let changeSign = '+';
+
+      if (diff > 0) {
+        changeClass = 'up';
+        changeSign = '+';
+      } else if (diff < 0) {
+        changeClass = 'down';
+        changeSign = '';
       }
 
-      render();
+      const card = document.getElementById('stockCard');
+      card.innerHTML = `
+        <div class="stock-code">${selectedStock.code}</div>
+        <div class="stock-name">${selectedStock.name}</div>
+        <div class="stock-price">${selectedStock.price.toLocaleString()} 円</div>
+        <div class="stock-change ${changeClass}">${changeSign}${diff.toLocaleString()} 円</div>
+      `;
     }
 
-    // 初回描画
-    render();
+    // 5秒ごとに完全全自動で実行される乱数変動処理
+    function autoUpdate() {
+      if (!selectedStock) return;
+
+      selectedStock.prevPrice = selectedStock.price;
+
+      // ランダムで高騰(50%の確率)か大幅下落(50%の確率)かを判定
+      const isBoom = Math.random() < 0.5;
+
+      let rate = 0;
+      if (isBoom) {
+        // 20% 〜 40% 高騰
+        rate = 0.20 + Math.random() * 0.20;
+      } else {
+        // 20% 〜 40% 大幅下落
+        rate = -(0.20 + Math.random() * 0.20);
+      }
+
+      let newPrice = Math.round(selectedStock.price * (1 + rate));
+      selectedStock.price = Math.max(10, newPrice); // 最低価格10円
+
+      // 高騰/下落に合わせてニュースもランダム抽出して切替
+      const targetNewsList = selectedStock.news.filter(n => n.type === (isBoom ? 'boom' : 'crash'));
+      const randomNews = targetNewsList[Math.floor(Math.random() * targetNewsList.length)];
+      
+      document.getElementById('newsBox').innerText = randomNews.text;
+
+      render();
+    }
   </script>
 </body>
 </html>
