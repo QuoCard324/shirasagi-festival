@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>エクストリームカイロニング Official Rules & Guide</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-color: #f8fafc;
+      --text-sub: #94a3b8;
+      --primary: #ff6b00;
+      --primary-hover: #ff8533;
+      --accent: #38bdf8;
+      --danger: #f43f5e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 20px 16px 60px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-top: 20px;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: rgba(255, 107, 0, 0.15);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      font-size: 0.85rem;
+      font-weight: bold;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+    }
+
+    .section {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    .item-box {
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px dashed var(--primary);
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: bold;
+    }
+
+    ul.rule-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    ul.rule-list li {
+      position: relative;
+      padding-left: 20px;
+      color: #cbd5e1;
+    }
+
+    ul.rule-list li::before {
+      content: "•";
+      color: var(--primary);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .highlight-box {
+      background-color: rgba(244, 63, 94, 0.1);
+      border-left: 3px solid var(--danger);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: #fecdd3;
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .tech-card {
+      background-color: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .tech-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .tech-desc {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+    }
+
+    .tips-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tip-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background-color: rgba(15, 23, 42, 0.4);
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .tip-num {
+      background-color: var(--primary);
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 0.8rem;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--text-sub);
+      font-size: 0.8rem;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <span class="badge">OFFICIAL GAME GUIDE</span>
+      <h1>エクストリームカイロニング</h1>
+      <p class="subtitle">カイロを駆使して戦う、精密かつスリリングな極限競技</p>
+    </header>
+
+    <!-- 必要な物 -->
+    <div class="section">
+      <h2 class="section-title">必要な物</h2>
+      <div class="item-box">
+        <span>🔥</span>
+        <span>大きいカイロ (1個)</span>
+      </div>
+    </div>
+
+    <!-- 競技ルール -->
+    <div class="section">
+      <h2 class="section-title">基本ルール & サーブ</h2>
+      <ul class="rule-list">
+        <li><strong>先攻の決定：</strong> 最初にじゃんけんを行い、勝ったほうが先攻となる。</li>
+        <li><strong>サーブ権の移行：</strong> 点数が入った後は、直前に点数を入れた人のターン（サーブ）となる。</li>
+        <li><strong>デュース規定：</strong> 同点でどちらもマッチポイントを迎えた場合、デュースを行う（上限は大会・規定の表を参照）。</li>
+      </ul>
+    </div>
+
+    <!-- 攻撃とレシーブの制限 -->
+    <div class="section">
+      <h2 class="section-title">攻撃・レシーブの判定基準</h2>
+      <ul class="rule-list">
+        <li><strong>攻撃形態：</strong> 攻撃は片手のみ。肩より上からの発射は認められない。</li>
+        <li><strong>パス・レシーブ上限：</strong> 1ターン内でのレシーブと攻撃は合計で最大5回まで。</li>
+        <li><strong>許容エリア：</strong> 相手に届く際、「腰の高さ〜頭の上」の範囲へ送らなければならない。</li>
+        <li><strong>アウト判定の特例：</strong> 腰より下、または頭より上へ飛んだ場合、原則相手の得点。ただし、相手がその反則カイロに反応して取りに行き失敗した場合、自分の得点となる。（反応したかどうかは個人の良心に委ねられる）</li>
+      </ul>
+
+      <div class="highlight-box">
+        <strong>⚠️ 移動・足の制限（注意）</strong><br>
+        【レシーブ時】 移動は片足の一歩までセーフ。<br>
+        【攻撃時】 足の踏み出しは一切禁止。一歩踏み出して捕カイロした後は、必ず元の位置に戻ってから攻撃すること。
+      </div>
+    </div>
+
+    <!-- 確認されているカイロ種一覧 -->
+    <div class="section">
+      <h2 class="section-title">確認されているカイロ種一覧</h2>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <div class="tech-name">ストレート</div>
+          <div class="tech-desc">真っ直ぐ飛ばす基本技。圧倒的な威力とスピードで相手をねじ伏せる。</div>
+        </div>
+
+        <div class="tech-card">
+          <div class="tech-name">ライズ</div>
+          <div class="tech-desc">膝の高さくらいから飛ばして相手の胴体に当てる。狙う場所によっては拾うのが非常に困難で有効。</div>
+        </div>
+
+        <div class="tech-card">
+          <div class="tech-name">ナックル</div>
+          <div class="tech-desc">無回転で不規則に軌道が変化する。腰あたりへの攻撃で威力を発揮する。</div>
+        </div>
+
+        <div class="tech-card">
+          <div class="tech-name">スライド</div>
+          <div class="tech-desc">利き手から放ち、相手の胴体左側を逸れていく。相手視点では左から自分の利き手側へ一直線に飛んでくるため、思わず手を出して取りに行き、反則誘導にかかりやすい。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 勝つためのコツ -->
+    <div class="section">
+      <h2 class="section-title">勝利のためのコツ</h2>
+      <div class="tips-list">
+        <div class="tip-item">
+          <div class="tip-num">1</div>
+          <div><strong>相手の肩周辺を狙う：</strong> キャッチしにくい絶妙な高さを攻める。</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">2</div>
+          <div><strong>フェイントを入れる：</strong> 飛ばすふりをして相手のタイミングや体制を崩す。</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">3</div>
+          <div><strong>緩急と高低差：</strong> 変化カイロとストレートを組み合わせ、速度差と高低差で翻弄する。</div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-num">4</div>
+          <div><strong>タイミングをずらす：</strong> 返すまでのレシーブ回数を毎回バラバラにして相手のテンポを狂わせる。</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; Extreme Kaironing Association. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+</body>
+</html>
