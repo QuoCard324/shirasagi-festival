@@ -1,308 +1,921 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>エクストリームカイロニング Official Rules & Guide</title>
-  <style>
-    :root {
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --card-border: #334155;
-      --text-color: #f8fafc;
-      --text-sub: #94a3b8;
-      --primary: #ff6b00;
-      --primary-hover: #ff8533;
-      --accent: #38bdf8;
-      --danger: #f43f5e;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全日本エクストリームカイロニング協会 (JAKA) | 公式サイト</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;600;800;900&display=swap" rel="stylesheet">
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF5722',
+                            red: '#E64A19',
+                            fire: '#FF3D00',
+                            gold: '#FFC107',
+                            dark: '#0A0C10',
+                            card: '#121620',
+                            border: '#2A3040'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
+                        display: ['"Teko"', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.8, filter: 'drop-shadow(0 0 15px rgba(255,87,34,0.6))' },
+                            '50%': { opacity: 1, filter: 'drop-shadow(0 0 30px rgba(255,61,0,0.9))' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.6;
-      padding: 20px 16px 60px;
-    }
+    <style>
+        body {
+            background-color: #0A0C10;
+            color: #E2E8F0;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(255, 87, 34, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(255, 193, 7, 0.05) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+        .glass-card {
+            background: rgba(18, 22, 32, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 87, 34, 0.2);
+        }
 
-    header {
-      text-align: center;
-      margin-bottom: 32px;
-      padding-top: 20px;
-    }
+        .glass-card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card-hover:hover {
+            border-color: rgba(255, 87, 34, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px -10px rgba(255, 87, 34, 0.3);
+        }
 
-    .badge {
-      display: inline-block;
-      background-color: rgba(255, 107, 0, 0.15);
-      color: var(--primary);
-      border: 1px solid var(--primary);
-      font-size: 0.85rem;
-      font-weight: bold;
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-      letter-spacing: 0.05em;
-    }
+        .text-gradient {
+            background: linear-gradient(135deg, #FF9800 0%, #FF5722 50%, #FF3D00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #ffffff 0%, var(--primary) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
-    }
+        .heat-border {
+            position: relative;
+        }
+        .heat-border::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FF5722, #FFC107, transparent);
+        }
 
-    p.subtitle {
-      color: var(--text-sub);
-      font-size: 0.95rem;
-    }
-
-    .section {
-      background-color: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-    }
-
-    .section-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--card-border);
-    }
-
-    .section-title::before {
-      content: "";
-      display: inline-block;
-      width: 4px;
-      height: 18px;
-      background-color: var(--primary);
-      border-radius: 2px;
-    }
-
-    .item-box {
-      background-color: rgba(255, 255, 255, 0.03);
-      border: 1px dashed var(--primary);
-      border-radius: 8px;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: bold;
-    }
-
-    ul.rule-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    ul.rule-list li {
-      position: relative;
-      padding-left: 20px;
-      color: #cbd5e1;
-    }
-
-    ul.rule-list li::before {
-      content: "•";
-      color: var(--primary);
-      font-weight: bold;
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-
-    .highlight-box {
-      background-color: rgba(244, 63, 94, 0.1);
-      border-left: 3px solid var(--danger);
-      padding: 12px 16px;
-      border-radius: 0 8px 8px 0;
-      margin-top: 12px;
-      font-size: 0.9rem;
-      color: #fecdd3;
-    }
-
-    .tech-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
-
-    .tech-card {
-      background-color: rgba(15, 23, 42, 0.6);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 16px;
-    }
-
-    .tech-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 6px;
-    }
-
-    .tech-desc {
-      font-size: 0.9rem;
-      color: var(--text-sub);
-    }
-
-    .tips-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .tip-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      background-color: rgba(15, 23, 42, 0.4);
-      padding: 12px;
-      border-radius: 8px;
-    }
-
-    .tip-num {
-      background-color: var(--primary);
-      color: #ffffff;
-      font-weight: bold;
-      font-size: 0.8rem;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    footer {
-      text-align: center;
-      color: var(--text-sub);
-      font-size: 0.8rem;
-      margin-top: 40px;
-    }
-  </style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0C10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2A3040;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF5722;
+        }
+    </style>
 </head>
-<body>
+<body class="font-sans antialiased text-gray-200">
 
-  <div class="container">
-    <header>
-      <span class="badge">OFFICIAL GAME GUIDE</span>
-      <h1>エクストリームカイロニング</h1>
-      <p class="subtitle">カイロを駆使して戦う、精密かつスリリングな極限競技</p>
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-card bg-opacity-90 border-b border-brand-border/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange to-brand-red p-0.5 shadow-lg shadow-brand-orange/20">
+                    <div class="w-full h-full bg-brand-dark rounded-[10px] flex items-center justify-center">
+                        <i class="fa-solid fa-fire text-brand-orange text-2xl group-hover:scale-110 transition-transform"></i>
+                    </div>
+                </div>
+                <div>
+                    <span class="font-display font-bold text-2xl tracking-wider text-white block leading-none">JAKA</span>
+                    <span class="text-[10px] font-semibold text-brand-orange tracking-widest uppercase block">全日本エクストリームカイロニング協会</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold tracking-wide">
+                <a href="#about" class="hover:text-brand-orange transition-colors">概要</a>
+                <a href="#rules" class="hover:text-brand-orange transition-colors">公式ルール</a>
+                <a href="#shots" class="hover:text-brand-orange transition-colors">カイロ種一覧</a>
+                <a href="#simulator" class="hover:text-brand-orange transition-colors text-brand-orange flex items-center gap-1.5"><i class="fa-solid fa-gamepad"></i> 軌道シミュレーター</a>
+                <a href="#checker" class="hover:text-brand-orange transition-colors">反則チェッカー</a>
+                <a href="#github" class="hover:text-brand-orange transition-colors">オープンソース</a>
+            </nav>
+
+            <!-- CTA Button -->
+            <div class="hidden md:block">
+                <a href="#simulator" class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-brand-orange to-brand-fire hover:from-brand-fire hover:to-brand-red text-white font-bold text-sm tracking-wider shadow-lg shadow-brand-orange/30 hover:shadow-brand-orange/50 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-play"></i> 体感してみる
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-btn" class="md:hidden text-2xl text-gray-300 hover:text-white focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-brand-border px-4 py-6 space-y-4">
+            <a href="#about" class="block text-lg font-semibold hover:text-brand-orange">概要</a>
+            <a href="#rules" class="block text-lg font-semibold hover:text-brand-orange">公式ルール</a>
+            <a href="#shots" class="block text-lg font-semibold hover:text-brand-orange">カイロ種一覧</a>
+            <a href="#simulator" class="block text-lg font-semibold text-brand-orange"><i class="fa-solid fa-gamepad mr-2"></i> 軌道シミュレーター</a>
+            <a href="#checker" class="block text-lg font-semibold hover:text-brand-orange">反則チェッカー</a>
+            <a href="#github" class="block text-lg font-semibold hover:text-brand-orange">オープンソース</a>
+        </div>
     </header>
 
-    <!-- 必要な物 -->
-    <div class="section">
-      <h2 class="section-title">必要な物</h2>
-      <div class="item-box">
-        <span>🔥</span>
-        <span>大きいカイロ (1個)</span>
-      </div>
-    </div>
+    <main class="pt-20">
 
-    <!-- 競技ルール -->
-    <div class="section">
-      <h2 class="section-title">基本ルール & サーブ</h2>
-      <ul class="rule-list">
-        <li><strong>先攻の決定：</strong> 最初にじゃんけんを行い、勝ったほうが先攻となる。</li>
-        <li><strong>サーブ権の移行：</strong> 点数が入った後は、直前に点数を入れた人のターン（サーブ）となる。</li>
-        <li><strong>デュース規定：</strong> 同点でどちらもマッチポイントを迎えた場合、デュースを行う（上限は大会・規定の表を参照）。</li>
-      </ul>
-    </div>
+        <!-- HERO SECTION -->
+        <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-20">
+            <!-- Background Glows -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-orange/15 rounded-full blur-[120px] pointer-events-none"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border-brand-orange/40 text-brand-orange font-semibold text-xs sm:text-sm tracking-widest uppercase mb-8 animate-pulse-glow">
+                    <i class="fa-solid fa-bolt"></i> JAPAN EXTREME KAIRONING ASSOCIATION
+                </div>
 
-    <!-- 攻撃とレシーブの制限 -->
-    <div class="section">
-      <h2 class="section-title">攻撃・レシーブの判定基準</h2>
-      <ul class="rule-list">
-        <li><strong>攻撃形態：</strong> 攻撃は片手のみ。肩より上からの発射は認められない。</li>
-        <li><strong>パス・レシーブ上限：</strong> 1ターン内でのレシーブと攻撃は合計で最大5回まで。</li>
-        <li><strong>許容エリア：</strong> 相手に届く際、「腰の高さ〜頭の上」の範囲へ送らなければならない。</li>
-        <li><strong>アウト判定の特例：</strong> 腰より下、または頭より上へ飛んだ場合、原則相手の得点。ただし、相手がその反則カイロに反応して取りに行き失敗した場合、自分の得点となる。（反応したかどうかは個人の良心に委ねられる）</li>
-      </ul>
+                <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white mb-6 leading-tight">
+                    熱き掌で繰り広げられる、<br>
+                    <span class="text-gradient">極限の熱戦（カイロ）</span>バトル。
+                </h1>
 
-      <div class="highlight-box">
-        <strong>⚠️ 移動・足の制限（注意）</strong><br>
-        【レシーブ時】 移動は片足の一歩までセーフ。<br>
-        【攻撃時】 足の踏み出しは一切禁止。一歩踏み出して捕カイロした後は、必ず元の位置に戻ってから攻撃すること。
-      </div>
-    </div>
+                <p class="max-w-3xl mx-auto text-lg sm:text-xl text-gray-300 mb-10 leading-relaxed font-normal">
+                    掌のぬくもり、空気を切り裂く変化軌道。ただの防寒具を超えた「使い捨てカイロ」で相手と真の優劣を競い合う、次世代のエクストリーム競技。
+                </p>
 
-    <!-- 確認されているカイロ種一覧 -->
-    <div class="section">
-      <h2 class="section-title">確認されているカイロ種一覧</h2>
-      <div class="tech-grid">
-        <div class="tech-card">
-          <div class="tech-name">ストレート</div>
-          <div class="tech-desc">真っ直ぐ飛ばす基本技。圧倒的な威力とスピードで相手をねじ伏せる。</div>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#simulator" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-brand-orange via-brand-fire to-brand-red text-white font-extrabold text-lg tracking-wider shadow-xl shadow-brand-orange/30 hover:shadow-brand-orange/60 hover:scale-105 transition-all flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-basketball"></i> 軌道シミュレーターを試す
+                    </a>
+                    <a href="#rules" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card hover:bg-brand-card hover:border-brand-orange/50 text-white font-bold text-lg tracking-wider transition-all flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-book-open"></i> 公式ルールを見る
+                    </a>
+                </div>
+
+                <!-- Stats summary -->
+                <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="glass-card p-4 rounded-2xl">
+                        <div class="font-display font-bold text-4xl text-brand-orange">1v1 / 2v2 / 3v3</div>
+                        <div class="text-xs text-gray-400 font-medium mt-1">対応マッチ形式</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl">
+                        <div class="font-display font-bold text-4xl text-brand-gold">5〜379点</div>
+                        <div class="text-xs text-gray-400 font-medium mt-1">勝利必要ポイント</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl">
+                        <div class="font-display font-bold text-4xl text-brand-fire">4種類</div>
+                        <div class="text-xs text-gray-400 font-medium mt-1">確認済変化カイロ種</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl">
+                        <div class="font-display font-bold text-4xl text-white">100%</div>
+                        <div class="text-xs text-gray-400 font-medium mt-1">「良心」への信頼性</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ABOUT SECTION -->
+        <section id="about" class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-wider text-white">WHAT IS KAIRONING?</h2>
+                    <p class="text-brand-orange font-semibold tracking-widest text-sm mt-1 uppercase">エクストリームカイロニングとは</p>
+                    <div class="w-16 h-1 bg-brand-orange mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-card p-8 rounded-2xl glass-card-hover relative overflow-hidden">
+                        <div class="w-14 h-14 rounded-2xl bg-brand-orange/20 flex items-center justify-center text-brand-orange text-2xl mb-6">
+                            <i class="fa-solid fa-temperature-arrow-up"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">熱量と戦略の融合</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            カイロ独特の重量感、空中での風圧の影響、そして手で掴んだ瞬間のぬくもり。物理的な戦術と心理戦が究極のレベルで交錯します。
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-8 rounded-2xl glass-card-hover relative overflow-hidden">
+                        <div class="w-14 h-14 rounded-2xl bg-brand-fire/20 flex items-center justify-center text-brand-fire text-2xl mb-6">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">試される「良心」</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            ゾーン外に飛んだ投擲に「反応して取りに行こうとしたか」は主審ではなくプレイヤー自身の良心に委ねられます。紳士のスポーツたる所以です。
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-8 rounded-2xl glass-card-hover relative overflow-hidden">
+                        <div class="w-14 h-14 rounded-2xl bg-brand-gold/20 flex items-center justify-center text-brand-gold text-2xl mb-6">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">必須ギア：「大きいカイロ」</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            道具は至ってシンプル。市販の「大きいカイロ（貼らないタイプ）」が1つあれば、いつでもどこでもバトルフィールドと化します。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- RULES SECTION -->
+        <section id="rules" class="py-20 relative bg-brand-dark/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-wider text-white">OFFICIAL RULES</h2>
+                    <p class="text-brand-orange font-semibold tracking-widest text-sm mt-1 uppercase">公式対戦規則</p>
+                    <div class="w-16 h-1 bg-brand-orange mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <!-- Match Types Table -->
+                <div class="glass-card rounded-2xl p-6 sm:p-8 mb-12 overflow-hidden">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-trophy text-brand-gold"></i> 種目・形式・勝利条件
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-brand-border text-gray-400 text-sm uppercase tracking-wider">
+                                    <th class="pb-4 font-semibold">種目</th>
+                                    <th class="pb-4 font-semibold">形式</th>
+                                    <th class="pb-4 font-semibold">勝利条件</th>
+                                    <th class="pb-4 font-semibold">デュース上限</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-brand-border/40 text-gray-200">
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4 font-bold text-brand-orange">シングルス</td>
+                                    <td class="py-4">1対1</td>
+                                    <td class="py-4 font-semibold">5点先取</td>
+                                    <td class="py-4 text-gray-400">10点</td>
+                                </tr>
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4 font-bold text-brand-orange">ダブルス</td>
+                                    <td class="py-4">2対2</td>
+                                    <td class="py-4 font-semibold">10点先取</td>
+                                    <td class="py-4 text-gray-400">15点</td>
+                                </tr>
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4 font-bold text-brand-orange">トリプルス</td>
+                                    <td class="py-4">3対3</td>
+                                    <td class="py-4 font-semibold text-brand-gold">379点先取 <span class="text-xs text-brand-orange font-normal">*1</span></td>
+                                    <td class="py-4 text-brand-gold font-bold">35億点</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 text-xs text-gray-400 italic">
+                        *1 … ※≠okapi
+                    </div>
+                </div>
+
+                <!-- Detailed Rules Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Rule 1 -->
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-orange/20 text-brand-orange flex items-center justify-center font-bold text-lg shrink-0">1</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-2">サーブとターンの流れ</h4>
+                                <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
+                                    <li>試合開始時、ジャンケンにより先攻を決定する。</li>
+                                    <li>点数が入った場合、<span class="text-brand-orange font-semibold">「直前に点数を入れた人（チーム）」</span>のターンとなる。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rule 2 -->
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-orange/20 text-brand-orange flex items-center justify-center font-bold text-lg shrink-0">2</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-2">攻撃制限と有効ゾーン</h4>
+                                <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
+                                    <li>攻撃は<span class="text-white font-bold">「片手のみ」</span>。肩より上からの攻撃は即座に無効。</li>
+                                    <li>相手到達時、<span class="text-brand-gold font-semibold">腰より低い位置</span>または<span class="text-brand-gold font-semibold">頭より上</span>への攻撃は無効（基本相手の点）。</li>
+                                    <li>ただし相手が上記エリア外のカイロに<span class="text-brand-orange font-bold">反応して捕カイロを試み失敗した場合、自分の点となる</span>（反応したかは良心による）。</li>
+                                    <li>ゾーン外のカイロを相手が拾った場合はラリー続行。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rule 3 -->
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-orange/20 text-brand-orange flex items-center justify-center font-bold text-lg shrink-0">3</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-2">1ターンのラリー回数制限</h4>
+                                <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
+                                    <li>1ターンにおけるレシーブと攻撃の動きは<span class="text-brand-orange font-bold">合計5回まで</span>とする。</li>
+                                    <li>回数内で素早く相手ゾーンへ返球しなければならない。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rule 4 -->
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-orange/20 text-brand-orange flex items-center justify-center font-bold text-lg shrink-0">4</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white mb-2">フットワーク・捕カイロ規定</h4>
+                                <ul class="text-sm text-gray-300 space-y-2 list-disc list-inside">
+                                    <li>レシーブ時：移動は<span class="text-white font-bold">「片足の一歩まで」</span>許容。</li>
+                                    <li>攻撃時：足の踏み出しは一切禁止。</li>
+                                    <li>一歩踏み出して捕カイロした後は、<span class="text-brand-orange font-semibold">必ず元の位置に戻ってから</span>攻撃を行うこと。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SHOTS SECTION -->
+        <section id="shots" class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-wider text-white">CONFIRMED SHOTS</h2>
+                    <p class="text-brand-orange font-semibold tracking-widest text-sm mt-1 uppercase">確認されているカイロ種一覧</p>
+                    <div class="w-16 h-1 bg-brand-orange mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Straight -->
+                    <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold uppercase tracking-wider">剛球系</span>
+                                <i class="fa-solid fa-arrow-up-long text-red-500 text-xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-black text-white mb-2">ストレート</h3>
+                            <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                真っ直ぐ飛ぶ。圧倒的な威力とスピードで捻じ伏せる基本にして至高の技術。
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-brand-border/60 text-xs text-brand-gold font-medium">
+                            <i class="fa-solid fa-user-ninja mr-1"></i> ドSなプレイヤーにぴったり
+                        </div>
+                    </div>
+
+                    <!-- Rise -->
+                    <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="px-3 py-1 rounded-full bg-brand-orange/20 text-brand-orange text-xs font-bold uppercase tracking-wider">高低差系</span>
+                                <i class="fa-solid fa-arrow-trend-up text-brand-orange text-xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-black text-white mb-2">ライズ</h3>
+                            <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                膝の高さくらいから低く放ち、急上昇させて相手の胴体に当てる変幻球。
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-brand-border/60 text-xs text-brand-orange font-medium">
+                            <i class="fa-solid fa-bullseye mr-1"></i> 狙う場所によっては拾うのが非常に困難
+                        </div>
+                    </div>
+
+                    <!-- Knuckle -->
+                    <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold uppercase tracking-wider">不規則系</span>
+                                <i class="fa-solid fa-wind text-purple-400 text-xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-black text-white mb-2">ナックル</h3>
+                            <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                無回転で放たれ、空気抵抗で不規則に揺れ動く恐怖のショット。
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-brand-border/60 text-xs text-purple-300 font-medium">
+                            <i class="fa-solid fa-shield-halved mr-1"></i> 腰あたりへの攻撃で絶大な威力を発揮
+                        </div>
+                    </div>
+
+                    <!-- Slide -->
+                    <div class="glass-card p-6 rounded-2xl glass-card-hover flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-wider">錯覚系</span>
+                                <i class="fa-solid fa-arrow-turn-down text-blue-400 text-xl rotate-[-45deg]"></i>
+                            </div>
+                            <h3 class="text-2xl font-black text-white mb-2">スライド</h3>
+                            <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                利き手から放ち、相手の胴体左側を逸れていく。思わず手が伸びる罠球。
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-brand-border/60 text-xs text-blue-300 font-medium">
+                            <i class="fa-solid fa-brain mr-1"></i> 相手の反応ミス誘発率トップクラス
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- STRATEGY TIPS -->
+                <div class="mt-12 glass-card rounded-2xl p-8 border-brand-orange/30">
+                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-lightbulb text-brand-gold"></i> 勝利へと導く戦術とコツ（Tips）
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                        <div class="bg-black/30 p-4 rounded-xl border border-white/5">
+                            <div class="font-bold text-brand-orange mb-1">1. 肩周辺をピンポイント攻撃</div>
+                            <p class="text-gray-400">相手の肩ギリギリのエリアは捕カイロ時の腕の可動域が狭まりエラーを誘発しやすい。</p>
+                        </div>
+                        <div class="bg-black/30 p-4 rounded-xl border border-white/5">
+                            <div class="font-bold text-brand-orange mb-1">2. 投擲フェイクの活用</div>
+                            <p class="text-gray-400">飛ばすフリをして相手の重心を狂わせ、フットワーク規定違反（一歩超え）を狙う。</p>
+                        </div>
+                        <div class="bg-black/30 p-4 rounded-xl border border-white/5">
+                            <div class="font-bold text-brand-orange mb-1">3. 緩急・高低差のミックス</div>
+                            <p class="text-gray-400">変化カイロ（ライズ/スライド）と直球（ストレート）を組み合わせ立体的な攻防を作る。</p>
+                        </div>
+                        <div class="bg-black/30 p-4 rounded-xl border border-white/5">
+                            <div class="font-bold text-brand-orange mb-1">4. レシーブ回数の揺さぶり</div>
+                            <p class="text-gray-400">返すまでのレシーブ回数を1〜5回の中で散らすことで相手の迎撃タイミングをずらす。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- INTERACTIVE SIMULATOR -->
+        <section id="simulator" class="py-20 relative bg-brand-dark/80">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span class="px-3 py-1 rounded-full bg-brand-orange/20 text-brand-orange text-xs font-bold uppercase tracking-wider">Interactive Tool</span>
+                    <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-wider text-white mt-2">SHOT TRAJECTORY SIMULATOR</h2>
+                    <p class="text-gray-400 text-sm mt-1">カイロ種を選択し、投擲ボタンでリアルタイムの物理・判定軌道をテストしよう！</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                    
+                    <!-- Controls -->
+                    <div class="glass-card p-6 rounded-2xl space-y-6">
+                        <h3 class="text-xl font-bold text-white border-b border-brand-border pb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-brand-orange"></i> パラメータ設定
+                        </h3>
+
+                        <!-- Shot Selection -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">カイロ種を選択</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="selectShot('straight')" id="btn-straight" class="shot-btn py-3 px-4 rounded-xl font-bold text-sm bg-brand-orange text-white transition-all">ストレート</button>
+                                <button onclick="selectShot('rise')" id="btn-rise" class="shot-btn py-3 px-4 rounded-xl font-bold text-sm bg-brand-card hover:bg-brand-border text-gray-300 transition-all">ライズ</button>
+                                <button onclick="selectShot('knuckle')" id="btn-knuckle" class="shot-btn py-3 px-4 rounded-xl font-bold text-sm bg-brand-card hover:bg-brand-border text-gray-300 transition-all">ナックル</button>
+                                <button onclick="selectShot('slide')" id="btn-slide" class="shot-btn py-3 px-4 rounded-xl font-bold text-sm bg-brand-card hover:bg-brand-border text-gray-300 transition-all">スライド</button>
+                            </div>
+                        </div>
+
+                        <!-- Power Slider -->
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-gray-400">投擲初速 (POWER)</span>
+                                <span id="power-val" class="text-brand-orange">120 km/h</span>
+                            </div>
+                            <input type="range" id="power-input" min="60" max="180" value="120" class="w-full accent-brand-orange bg-brand-card rounded-lg h-2" oninput="updatePower(this.value)">
+                        </div>
+
+                        <!-- Opponent Reaction Checkbox -->
+                        <div class="p-4 rounded-xl bg-black/30 border border-brand-border space-y-3">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" id="opp-react" class="w-4 h-4 accent-brand-orange rounded" checked>
+                                <span class="text-sm text-gray-200 font-medium">相手がカイロに反応して捕りに行く</span>
+                            </label>
+                            <p class="text-xs text-gray-400 leading-normal">
+                                ※判定規則：コースアウト球でも相手が反応して捕損した場合、投擲者の得点となります。
+                            </p>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button onclick="throwKairo()" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-orange to-brand-fire hover:from-brand-fire hover:to-brand-red text-white font-black text-lg tracking-wider shadow-lg shadow-brand-orange/40 transition-all active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> 投擲（THROW）
+                        </button>
+                    </div>
+
+                    <!-- Canvas Viewport -->
+                    <div class="lg:col-span-2 glass-card p-4 rounded-2xl relative overflow-hidden flex flex-col items-center">
+                        <div class="w-full flex justify-between items-center px-4 py-2 mb-2 text-xs text-gray-400">
+                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-video text-brand-orange"></i> MATCH SIMULATOR CAM</span>
+                            <span id="shot-status" class="font-mono text-brand-gold">READY TO THROW</span>
+                        </div>
+
+                        <canvas id="simCanvas" class="w-full h-[360px] bg-black/60 rounded-xl border border-brand-border/60"></canvas>
+
+                        <!-- Result Banner overlay -->
+                        <div id="sim-result" class="mt-4 w-full p-4 rounded-xl bg-brand-card/90 border border-brand-border flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-gray-400 font-semibold block">判定結果</span>
+                                <span id="result-text" class="text-lg font-bold text-white">ショットを選択して投擲してください</span>
+                            </div>
+                            <div id="result-badge" class="px-4 py-1.5 rounded-full text-xs font-black bg-gray-800 text-gray-400 uppercase tracking-wider">
+                                WAIT
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- FOUL CHECKER & POINT CALCULATOR -->
+        <section id="checker" class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-wider text-white">RULE & FOUL CHECKER</h2>
+                    <p class="text-brand-orange font-semibold tracking-widest text-sm mt-1 uppercase">「これってポイント？反則？」即時判定ツール</p>
+                    <div class="w-16 h-1 bg-brand-orange mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="max-w-3xl mx-auto glass-card p-8 rounded-2xl">
+                    <form id="checker-form" class="space-y-6" onsubmit="event.preventDefault(); checkRule();">
+                        
+                        <!-- Question 1 -->
+                        <div>
+                            <label class="block text-sm font-bold text-white mb-2">1. 投擲されたカイロの通過高度・着弾位置は？</label>
+                            <select id="q-height" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-sm text-gray-200 focus:outline-none focus:border-brand-orange">
+                                <option value="valid">腰の高さ〜頭より下の適正ゾーン</option>
+                                <option value="too_low">腰より低い位置（低すぎる）</option>
+                                <option value="too_high">頭より上（高すぎる）</option>
+                            </select>
+                        </div>
+
+                        <!-- Question 2 -->
+                        <div>
+                            <label class="block text-sm font-bold text-white mb-2">2. （ゾーン外の場合）相手レシーバーは取りに動きましたか？</label>
+                            <select id="q-reaction" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-sm text-gray-200 focus:outline-none focus:border-brand-orange">
+                                <option value="none">見送った（全く反応せず）</option>
+                                <option value="reacted">良心に基づき、反応して取りに行こうとしたが取れなかった</option>
+                                <option value="caught">ゾーン外だったが普通にキャッチして拾った</option>
+                            </select>
+                        </div>
+
+                        <!-- Question 3 -->
+                        <div>
+                            <label class="block text-sm font-bold text-white mb-2">3. 攻撃者の投げ方・フットワーク状態は？</label>
+                            <select id="q-form" class="w-full bg-brand-dark border border-brand-border rounded-xl p-3 text-sm text-gray-200 focus:outline-none focus:border-brand-orange">
+                                <option value="clean">片手投げ / 肩より下 / 元の位置に戻って踏み出しなし</option>
+                                <option value="overhand">肩より上からのスロー</option>
+                                <option value="step">捕カイロ後に元の位置に戻らず踏み出して攻撃した</option>
+                                <option value="twohands">両手を使用していた</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl bg-brand-orange hover:bg-brand-fire text-white font-bold text-base tracking-wider transition-all shadow-md">
+                            <i class="fa-solid fa-gavel"></i> 審判判定を実行する
+                        </button>
+                    </form>
+
+                    <!-- Checker Output Modal/Box -->
+                    <div id="checker-result" class="hidden mt-6 p-6 rounded-xl border border-brand-orange/40 bg-black/40">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i id="checker-icon" class="text-2xl"></i>
+                            <h4 id="checker-title" class="text-xl font-bold text-white"></h4>
+                        </div>
+                        <p id="checker-desc" class="text-sm text-gray-300 leading-relaxed"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- COMMUNITY & GITHUB SECTION -->
+        <section id="github" class="py-20 relative bg-gradient-to-b from-brand-dark to-black border-t border-brand-border/40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                
+                <div class="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white text-3xl mx-auto mb-6">
+                    <i class="fa-brands fa-github"></i>
+                </div>
+
+                <h2 class="font-display text-4xl sm:text-5xl font-bold tracking-wider text-white">OPEN SOURCE & DEVELOPMENT</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-sm mt-3 leading-relaxed">
+                    一応運営してみての気づき：「試合スピードが速すぎて審判の目が追いつかないため、オープンソースでルール補足と新カイロ種のPull Requestを常時募集しております。」
+                </p>
+
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <a href="https://github.com" target="_blank" rel="noopener" class="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 transition-all flex items-center gap-2">
+                        <i class="fa-brands fa-github"></i> github.com/extreme-kaironing/official-site
+                    </a>
+                    <a href="#rules" class="px-6 py-3 rounded-xl bg-brand-orange/20 text-brand-orange hover:bg-brand-orange/30 font-semibold text-sm border border-brand-orange/30 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-code-pull-request"></i> ルール改正案を送る
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-10 border-t border-brand-border/60 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="mb-2">© 全日本エクストリームカイロニング協会 (Japan Extreme Kaironing Association). All Rights Reserved.</p>
+            <p class="text-gray-600">※エクストリームカイロニングは安全に配慮して行いましょう。低温やけどにご注意ください。</p>
         </div>
-
-        <div class="tech-card">
-          <div class="tech-name">ライズ</div>
-          <div class="tech-desc">膝の高さくらいから飛ばして相手の胴体に当てる。狙う場所によっては拾うのが非常に困難で有効。</div>
-        </div>
-
-        <div class="tech-card">
-          <div class="tech-name">ナックル</div>
-          <div class="tech-desc">無回転で不規則に軌道が変化する。腰あたりへの攻撃で威力を発揮する。</div>
-        </div>
-
-        <div class="tech-card">
-          <div class="tech-name">スライド</div>
-          <div class="tech-desc">利き手から放ち、相手の胴体左側を逸れていく。相手視点では左から自分の利き手側へ一直線に飛んでくるため、思わず手を出して取りに行き、反則誘導にかかりやすい。</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 勝つためのコツ -->
-    <div class="section">
-      <h2 class="section-title">勝利のためのコツ</h2>
-      <div class="tips-list">
-        <div class="tip-item">
-          <div class="tip-num">1</div>
-          <div><strong>相手の肩周辺を狙う：</strong> キャッチしにくい絶妙な高さを攻める。</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-num">2</div>
-          <div><strong>フェイントを入れる：</strong> 飛ばすふりをして相手のタイミングや体制を崩す。</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-num">3</div>
-          <div><strong>緩急と高低差：</strong> 変化カイロとストレートを組み合わせ、速度差と高低差で翻弄する。</div>
-        </div>
-        <div class="tip-item">
-          <div class="tip-num">4</div>
-          <div><strong>タイミングをずらす：</strong> 返すまでのレシーブ回数を毎回バラバラにして相手のテンポを狂わせる。</div>
-        </div>
-      </div>
-    </div>
-
-    <footer>
-      <p>&copy; Extreme Kaironing Association. All Rights Reserved.</p>
     </footer>
-  </div>
 
+
+    <!-- JAVASCRIPT SIMULATOR & LOGIC -->
+    <script>
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Simulator Logic
+        let currentShot = 'straight';
+        let power = 120;
+        let isAnimating = false;
+
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth - 32;
+            canvas.height = 360;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function selectShot(type) {
+            currentShot = type;
+            document.querySelectorAll('.shot-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-orange', 'text-white');
+                btn.classList.add('bg-brand-card', 'text-gray-300');
+            });
+            const activeBtn = document.getElementById(`btn-${type}`);
+            activeBtn.classList.remove('bg-brand-card', 'text-gray-300');
+            activeBtn.classList.add('bg-brand-orange', 'text-white');
+            drawCourt();
+        }
+
+        function updatePower(val) {
+            power = val;
+            document.getElementById('power-val').innerText = `${val} km/h`;
+        }
+
+        // Draw basic court scene
+        function drawCourt(kairoPos = null, trail = []) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const w = canvas.width;
+            const h = canvas.height;
+
+            // Background Net / Grid
+            ctx.strokeStyle = 'rgba(255, 87, 34, 0.1)';
+            ctx.lineWidth = 1;
+            for(let x=0; x<w; x+=30) {
+                ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke();
+            }
+
+            // Player positions
+            // Player Left (Thrower)
+            ctx.fillStyle = '#FF5722';
+            ctx.beginPath();
+            ctx.arc(80, h - 80, 18, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 10px sans-serif';
+            ctx.fillText('YOU', 70, h - 110);
+
+            // Target Opponent Right
+            ctx.fillStyle = '#64748B';
+            ctx.beginPath();
+            ctx.arc(w - 80, h - 120, 18, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#E2E8F0';
+            ctx.fillText('OPPONENT', w - 110, h - 150);
+
+            // Target Valid Zone Box around opponent
+            ctx.strokeStyle = 'rgba(255, 193, 7, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4, 4]);
+            ctx.strokeRect(w - 110, h - 180, 60, 100);
+            ctx.setLineDash([]);
+
+            // Draw Trail
+            if (trail.length > 1) {
+                ctx.strokeStyle = 'rgba(255, 87, 34, 0.6)';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(trail[0].x, trail[0].y);
+                for (let i = 1; i < trail.length; i++) {
+                    ctx.lineTo(trail[i].x, trail[i].y);
+                }
+                ctx.stroke();
+            }
+
+            // Draw Kairo
+            if (kairoPos) {
+                // Glow
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#FF3D00';
+                ctx.fillStyle = '#FFC107';
+                ctx.beginPath();
+                ctx.arc(kairoPos.x, kairoPos.y, 10, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0; // reset
+            }
+        }
+
+        function throwKairo() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            document.getElementById('shot-status').innerText = 'THROWING...';
+            document.getElementById('shot-status').className = 'font-mono text-brand-orange animate-pulse';
+
+            const w = canvas.width;
+            const h = canvas.height;
+            const oppReact = document.getElementById('opp-react').checked;
+
+            let startX = 80;
+            let startY = h - 80;
+            let progress = 0;
+            let trail = [];
+
+            let targetX = w - 80;
+            let targetY = h - 120;
+
+            const duration = Math.max(30, 100 - (power / 2));
+
+            const anim = setInterval(() => {
+                progress += 1 / duration;
+
+                let curX = startX + (targetX - startX) * progress;
+                let curY = startY;
+
+                // Path Trajectory modification based on Shot Type
+                if (currentShot === 'straight') {
+                    curY = startY + (targetY - startY) * progress;
+                } else if (currentShot === 'rise') {
+                    // Starts low, then rises
+                    let lowY = h - 40;
+                    if (progress < 0.5) {
+                        curY = startY + (lowY - startY) * (progress * 2);
+                    } else {
+                        curY = lowY + (targetY - lowY) * ((progress - 0.5) * 2);
+                    }
+                } else if (currentShot === 'knuckle') {
+                    // Zig zag wobble
+                    let base = startY + (targetY - startY) * progress;
+                    curY = base + Math.sin(progress * 20) * 12;
+                } else if (currentShot === 'slide') {
+                    // Curve out to the side (too far left / low)
+                    let base = startY + (targetY - 60 - startY) * progress;
+                    curY = base;
+                }
+
+                trail.push({x: curX, y: curY});
+                drawCourt({x: curX, y: curY}, trail);
+
+                if (progress >= 1) {
+                    clearInterval(anim);
+                    isAnimating = false;
+                    document.getElementById('shot-status').innerText = 'FINISHED';
+                    document.getElementById('shot-status').className = 'font-mono text-brand-gold';
+                    evaluateResult(currentShot, oppReact);
+                }
+            }, 16);
+        }
+
+        function evaluateResult(shot, oppReact) {
+            const resText = document.getElementById('result-text');
+            const resBadge = document.getElementById('result-badge');
+
+            if (shot === 'straight') {
+                resText.innerText = '直線的な強攻！相手正面の有効エリアに着弾。';
+                resBadge.innerText = 'POINT / 得点チャンス';
+                resBadge.className = 'px-4 py-1.5 rounded-full text-xs font-black bg-emerald-500/20 text-emerald-400 uppercase tracking-wider';
+            } else if (shot === 'rise') {
+                resText.innerText = '膝元からの急上昇！相手の捕カイロタイミングを完全破壊。';
+                resBadge.innerText = 'CRITICAL POINT';
+                resBadge.className = 'px-4 py-1.5 rounded-full text-xs font-black bg-brand-orange/20 text-brand-orange uppercase tracking-wider';
+            } else if (shot === 'knuckle') {
+                resText.innerText = '不規則変化！相手の手元で変化しファンブルを誘発。';
+                resBadge.innerText = 'SUCCESS / 変化球成功';
+                resBadge.className = 'px-4 py-1.5 rounded-full text-xs font-black bg-purple-500/20 text-purple-400 uppercase tracking-wider';
+            } else if (shot === 'slide') {
+                if (oppReact) {
+                    resText.innerText = 'コースアウト球だが、相手が思わず手を出してキャッチ失敗！良心規定により自分の得点！';
+                    resBadge.innerText = 'REACTION POINT / 得点';
+                    resBadge.className = 'px-4 py-1.5 rounded-full text-xs font-black bg-brand-gold/20 text-brand-gold uppercase tracking-wider';
+                } else {
+                    resText.innerText = '相手に見送られアウト。胴体左に逸れたため相手の得点となります。';
+                    resBadge.innerText = 'OUT / 相手得点';
+                    resBadge.className = 'px-4 py-1.5 rounded-full text-xs font-black bg-red-500/20 text-red-400 uppercase tracking-wider';
+                }
+            }
+        }
+
+        // Rule Checker Logic
+        function checkRule() {
+            const height = document.getElementById('q-height').value;
+            const reaction = document.getElementById('q-reaction').value;
+            const form = document.getElementById('q-form').value;
+
+            const box = document.getElementById('checker-result');
+            const icon = document.getElementById('checker-icon');
+            const title = document.getElementById('checker-title');
+            const desc = document.getElementById('checker-desc');
+
+            box.classList.remove('hidden');
+
+            // Form Check first
+            if (form === 'overhand') {
+                icon.className = 'fa-solid fa-triangle-exclamation text-red-500';
+                title.innerText = '反則：肩より上からのスロー';
+                desc.innerText = '肩より上からの攻撃は認められていません。相手に1ポイントが入ります。';
+                return;
+            }
+            if (form === 'step') {
+                icon.className = 'fa-solid fa-triangle-exclamation text-red-500';
+                title.innerText = '反則：踏み出し攻撃の禁止規定違反';
+                desc.innerText = '一歩踏み出して捕カイロした後は、必ず元の位置に戻ってから攻撃しなければなりません。相手の得点となります。';
+                return;
+            }
+            if (form === 'twohands') {
+                icon.className = 'fa-solid fa-triangle-exclamation text-red-500';
+                title.innerText = '反則：両手使用';
+                desc.innerText = '攻撃は片手のみ認められています。';
+                return;
+            }
+
+            // Height & Reaction Check
+            if (height === 'valid') {
+                icon.className = 'fa-solid fa-circle-check text-emerald-400';
+                title.innerText = '適正ゾーンへの投擲：イン';
+                desc.innerText = '有効高さへの攻撃です。相手がキャッチできなければ自身の得点、拾われた場合はラリー続行となります。';
+            } else {
+                if (reaction === 'reacted') {
+                    icon.className = 'fa-solid fa-fire text-brand-gold';
+                    title.innerText = '判定：自分の得点（相手の反応誘発）';
+                    desc.innerText = 'ゾーン外（腰より下または頭より上）への飛ばしですが、相手が良心に基づき取りに行こうとして失敗したため、ルール上「自分の得点」となります！';
+                } else if (reaction === 'caught') {
+                    icon.className = 'fa-solid fa-arrows-rotate text-blue-400';
+                    title.innerText = '判定：ラリー続行';
+                    desc.innerText = 'ゾーン外への攻撃でしたが、相手がそのままキャッチ（捕カイロ）したためプレー続行となります。';
+                } else {
+                    icon.className = 'fa-solid fa-xmark text-red-400';
+                    title.innerText = '判定：相手の得点（アウト）';
+                    desc.innerText = '適正ゾーン外へ飛ばし、かつ相手が見送ったため、基本的に相手に点数が入ります。';
+                }
+            }
+        }
+
+        // Initialize default view
+        drawCourt();
+    </script>
 </body>
 </html>
